@@ -1,7 +1,5 @@
 # qwikflip
 
-Minimum Viable Product:
-
 Project Title: QuikFlip
 
 Team Members: Scott, Guy, Mustafa
