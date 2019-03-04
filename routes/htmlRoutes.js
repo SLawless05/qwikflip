@@ -21,22 +21,24 @@ module.exports = function (app) {
   // Load singleitem page and pass in an item by id
   app.get("/items/:id", function (req, res) {
     db.Item.findOne({ include: [db.User], where: { id: req.params.id } }).then(function (data) {
-      res.render("singleItem", data[0]);
-  // Load example page and pass in an example by id
-  app.get("/posts/:id", function(req, res) {
-    db.Item.findOne({include: [db.User], where: { id: req.params.id } }).then(function(data) {
-      res.render("singleItem", {
-        post: data
+      res.render("singleItem", data);
+      // Load example page and pass in an example by id
+      // app.get("/posts/:id", function (req, res) {
+      //   db.Item.findOne({ include: [db.User], where: { id: req.params.id } }).then(function (data) {
+      //     res.render("singleItem", {
+      //       post: data
+      //     });
+      //   });
+      // });
+
+      app.get("/users/:UserId", function (req, res) {
+        db.Item.findAll({ include: [db.User], where: req.params }).then(data => res.render("account", { items: data })).catch(err => res.json(err));
+      })
+
+      // Render 404 page for any unmatched routes
+      app.get("*", function (req, res) {
+        res.render("404");
       });
-    });
-  });
-
-  app.get("/users/:UserId", function (req, res) {
-    db.Item.findAll({ include: [db.User], where: req.params }).then(data => res.render("account", {items: data})).catch(err => res.json(err));
+    })
   })
-
-  // Render 404 page for any unmatched routes
-  app.get("*", function (req, res) {
-    res.render("404");
-  });
 };
