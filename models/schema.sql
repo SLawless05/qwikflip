@@ -1,0 +1,4 @@
+DROP DATABASE IF EXISTS qwikflip;
+CREATE DATABASE qwikflip;
+
+
