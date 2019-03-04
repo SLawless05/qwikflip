@@ -13,7 +13,7 @@ module.exports = function(app) {
   // Load example page and pass in an example by id
   app.get("/posts/:id", function(req, res) {
     db.Item.findOne({include: [db.User], where: { id: req.params.id } }).then(function(data) {
-      res.render("singlepost", {
+      res.render("singleItem", {
         post: data
       });
     });
