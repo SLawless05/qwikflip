@@ -21,28 +21,28 @@ module.exports = function (app) {
     }).catch(err => res.json(err));
   });
   // Get all posts of a user
-  app.get("/api/posts/:userid", function (req, res) {
+  app.get("/api/items/:UserId", function (req, res) {
     db.Item.findAll({include: [db.User], where: req.params }).then(function (data) {
       res.json(data);
     }).catch(err => res.json(err));
   });
 
   // Create a new post
-  app.post("/api/posts", function (req, res) {
+  app.post("/api/items", function (req, res) {
     db.Item.create(req.body).then(function (data) {
       res.json(data);
     }).catch(err => res.json(err));
   });
 
   //Edit a post
-  app.put("api/posts", function(req, res){
+  app.put("api/items", function(req, res){
     db.Item.update(req.body, {where: {id: req.body.id}}).then(function(data){
       res.json(data);
     }).catch(err => res.json(err));
   })
 
   // Delete a post by id
-  app.delete("/api/posts/:id", function (req, res) {
+  app.delete("/api/items/:id", function (req, res) {
     db.Item.destroy({ where: req.params }).then(function (data) {
       res.json(data);
     }).catch(err => res.json(err));

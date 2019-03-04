@@ -5,7 +5,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 len: [2, 22],
-                isAlphanumeric: true,
+                
             }
         },
         description: {
@@ -21,10 +21,10 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 len: [2],
-                isAlpha: true
+                
             }
         },
-        imageURL: {
+        imageUrl: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
