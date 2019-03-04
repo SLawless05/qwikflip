@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "root",
+    "password": null,
     "database": "qwikflip",
     "host": "localhost",
     "dialect": "mysql"
@@ -19,3 +19,4 @@
     "dialect": "mysql"
   }
 }
+
