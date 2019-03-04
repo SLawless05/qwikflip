@@ -21,7 +21,7 @@ module.exports = function (app) {
     }).catch(err => res.json(err));
   });
   // Get all posts of a user
-  app.get("/api/items/:userid", function (req, res) {
+  app.get("/api/items/:UserId", function (req, res) {
     db.Item.findAll({include: [db.User], where: req.params }).then(function (data) {
       res.json(data);
     }).catch(err => res.json(err));

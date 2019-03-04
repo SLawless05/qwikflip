@@ -13,6 +13,10 @@ module.exports = function (app) {
     }).catch(err => res.json(err));
   });
 
+  app.get("/api/users/:UserId", function(req, res){
+    db.Item.findAll({include:[db.User], where: req.params}).then(data => res.json(data)).catch(err => res.json(err));
+  })
+
   // Create a new user
   app.post("/api/users", function (req, res) {
     db.User.create(req.body).then(function (data) {
