@@ -5,7 +5,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       validate: {
         len: [2],
-        isAlpha: true,
+        
       }
     },
     email: {
