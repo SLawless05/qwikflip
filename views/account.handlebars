@@ -21,14 +21,16 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
-            <h1>Hi, {{items.0.User.name}}</h1>
-            <a href="/newitem/{{items.0.UserId}}" class="btn btn-primary" data-id="{{items.0.UserId}}">Post an Item</a>
+        <div class="col mb-3">
+            <h1>Hi, {{user.name}}</h1>
+            <a href="/newitem/{{user.id}}" class="btn btn-primary" data-id="{{user.id}}">Post an Item</a>
+
 
         </div>
-        
-        <div class="row">
-            <br>
+
+    </div>
+    <div class="row">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     Your Items
@@ -44,8 +46,8 @@
                                 <h5 class="card-title">{{name}}</h5>
                                 <h4 class="card-title">${{price}}</h4>
                                 <p class="card-text">{{location}}</p>
-                                <a href="/items/{{id}}" class="btn btn-primary bg-danger delete-btn">Delete</a>
-                                <a href="/items/{{id}}" class="btn btn-primary edit-btn">Edit</a>
+                                <button data-id="{{id}}" class="btn btn-primary bg-danger delete-btn"> Delete</button>
+                                <a href="/items/update/{{id}}"><button data-id="{{id}}" class="btn btn-primary edit-btn">Edit</button></a>
                             </div>
 
                         </div>
@@ -57,5 +59,22 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>
+<script>
+    $(".delete-btn").on("click", event => {
+        event.preventDefault();
+        
+        $.ajax("/api/items", {
+            type: "DELETE",
+            data: {id: $(this).data("id")}
+        }).then(function(){
+            console.log("item deleted");
+            location.reload();
+        })
+    })
+
+    
+</script>

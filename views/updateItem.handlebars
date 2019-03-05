@@ -1,0 +1,123 @@
+<div class="modal" id="item-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Congratulations!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Your Item has been posted.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div class="card">
+                <h5 class="card-header">Post an Item</h5>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="item-name">Item Name</label>
+                            <input type="text" class="form-control" id="item-name" value="{{name}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="item-description">Description</label>
+                            <textarea class="form-control" id="item-description" rows="3">{{description}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-condition">Item Condition</label>
+                            <select class="form-control" id="item-condition">
+                                <option value="true">Used</option>
+                                <option value="false">New</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-category">Category</label>
+                            <select class="form-control" id="item-category">
+                                <option selected>{{category}}</option>
+                                <option>Electronics</option>
+                                <option>Furniture</option>
+                                <option>Cars</option>
+                                <option>Appliances</option>
+                                <option>Bicycles</option>
+                                <option>Cell Phones</option>
+                                <option>Video Games</option>
+                                <option>TVs</option>
+                                <option>Jewelry</option>
+                                <option>Toys</option>
+                                <option>Collectibles</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-price">Price ($)</label>
+                            <input type="number" class="form-control" id="item-price" value="{{price}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="item-location">Location</label>
+                            <input type="text" class="form-control" id="item-location" value="{{location}}">
+                        </div>
+                        {{!-- <div class="card text-center">
+                            <div class="card-body justify-content-center">
+                                <h5 class="card-title">Upload a Photo of Your Item</h5>
+
+                                <label class="btn btn-secondary" id="upload-btn" for="fileButton">Upload</label><input
+                                    type="file" value="upload" id="fileButton" style="display:none" />
+                                <div id="warningImg"></div>
+                                <br>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary"
+                                        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                        style="width: 0%">0%</div>
+                                </div>
+                                <div id="uploadBttn"></div>
+                            </div>
+                        </div> --}}
+                        <br>
+                        <button id="edit-btn" type="submit" class="btn btn-primary col text-center">Update Item</button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<input type="text" class="form-control" id="item-id" hidden value="{{id}}">
+<input type="text" class="form-control" id="user-id" hidden value="{{UserId}}">
+
+
+<script>
+
+    $("#edit-btn").on("click", function (event) {
+        event.preventDefault();
+        var updatedItem = {
+            id: $("#item-id").val(),
+            name: $("#item-name").val().trim(),
+            description: $("#item-description").val().trim(),
+            condition: $("#item-condition").val(),
+            category: $("#item-category").val(),
+            price: $("#item-price").val(),
+            location: $("#item-location").val().trim()
+        }
+
+        console.log(updatedItem);
+
+        $.ajax("/api/items", {
+            type: "PUT",
+            data: updatedItem
+        }).then(function () {
+            window.location.replace("/users/"+$("#user-id").val())
+
+        })
+    });
+
+</script>
