@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         description: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         used: {
@@ -40,8 +40,8 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                len: [2],
-                isAlpha: true
+                len: [2]
+                
             }
         },
     });

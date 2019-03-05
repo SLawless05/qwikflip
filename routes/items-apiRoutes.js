@@ -35,16 +35,19 @@ module.exports = function (app) {
   });
 
   //Edit a post
-  app.put("api/items", function(req, res){
+  app.put("/api/items", function(req, res){
+    console.log(req.body);
     db.Item.update(req.body, {where: {id: req.body.id}}).then(function(data){
-      res.json(data);
-    }).catch(err => res.json(err));
-  })
+      res.send("Success");
+    }).catch(err => res.send(err));
+  });
 
   // Delete a post by id
   app.delete("/api/items/:id", function (req, res) {
-    db.Item.destroy({ where: req.params }).then(function (data) {
-      res.json(data);
-    }).catch(err => res.json(err));
+    db.Item.destroy({
+      where: req.params
+    }).then(function (data) {
+      res.send("Success");
+    }).catch(err => res.send(err));
   });
 };
