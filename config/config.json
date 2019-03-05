@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "bamazon",
+    "database": "qwikflip",
     "host": "localhost",
     "dialect": "mysql"
   },

@@ -20,26 +20,26 @@
     </ul>
   </div>
 </nav>
-
 <br>
+
 <div class="container">
-  <div class="row">
+    <div class="row">
+        <div class="col text-center">
+            <h1>{{this.name}}</h1>
 
-    {{#each items}}
+            <img src="{{imageUrl}}" alt="{{name}}">
 
-    <div class="card col-3 mr-3">
-      <img src="{{imageUrl}}" class="card-img-top" alt="{{name}}">
-      <div class="card-body">
-        <h5 class="card-title">{{name}}</h5>
-        <h4 class="card-title">${{price}}</h4>
-        <p class="card-text">{{location}}</p>
-        <a href="/items/{{id}}" class="btn btn-primary">Details</a>
-      </div>
+            <p>{{description}}</p>
 
+            <p>Used: {{used}}</p>
+
+            <p>Price: {{price}}</p>
+
+            <p>Location: {{location}}</p>
+
+            <a href="/">← Back To Home</a>
+
+        </div>
     </div>
-
-    {{/each}}
-
-
-  </div>
 </div>
+<br>

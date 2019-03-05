@@ -3,7 +3,6 @@ var $exampleText = $("#example-text");
 var $exampleDescription = $("#example-description");
 var $submitBtn = $("#submit");
 var $exampleList = $("#example-list");
-var $itemPrice = $("#item-price");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
@@ -31,8 +30,8 @@ var API = {
   }
 };
 
-// refreshItems gets new examples from the db and repopulates the list
-var refreshItems = function () {
+// refreshExamples gets new examples from the db and repopulates the list
+var refreshExamples = function () {
   API.getItems().then(function (data) {
     var $examples = data.map(function (example) {
       var $a = $("<a>")
@@ -72,17 +71,16 @@ var handleFormSubmit = function (event) {
 
   var example = {
     text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim(),
-    price: $itemPrice.val().trim()
+    description: $exampleDescription.val().trim()
   };
 
-  if (!(example.text && example.description && $itemPrice)) {
+  if (!(example.text && example.description)) {
     alert("You must enter an example text and description!");
     return;
   }
 
   API.saveItem(example).then(function () {
-    refreshItems();
+    refreshExamples();
   });
 
   $exampleText.val("");
