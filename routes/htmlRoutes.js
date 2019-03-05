@@ -12,13 +12,20 @@ module.exports = function (app) {
 
   app.get("/signup", function (req, res) {
     res.render("register");
-    
+
   });
 
   app.get("/login", function (req, res) {
     // res.sendfile("public/html/login.html");
     res.render("login");
   });
+
+  app.get("/items/update/:id", function(req, res){
+    db.Item.findOne({include: [db.User], where: req.params}).then(function(data){
+      res.render("updateItem", data.dataValues);
+      console.log(data.dataValues);
+    }).catch();
+  })
 
   // Load singleitem page and pass in an item by id
   app.get("/items/:id", function (req, res) {
@@ -29,10 +36,17 @@ module.exports = function (app) {
   });
 
   app.get("/users/:UserId", function (req, res) {
-    db.Item.findAll({ include: [db.User], where: req.params }).then(data => res.render("account", { items: data })).catch(err => res.json(err));
+    db.User.findOne({ where: { id: req.params.UserId } }).then(function(result){
+
+      db.Item.findAll({ include: [db.User], where: req.params }).then(data => res.render("account", { items: data,
+      user: result}))
+
+    }).catch(err => res.json(err))
+      
+    
   });
 
-  app.get("/newitem/:UserId", function(req, res){
+  app.get("/newitem/:UserId", function (req, res) {
     res.render("postItem", req.params);
   })
 
