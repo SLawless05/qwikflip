@@ -1,4 +1,5 @@
 <br>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-4">
@@ -20,7 +21,7 @@
 
                         </div>
 
-                        <button type="submit">Log In</button>
+                        <button type="submit" id="login-btn">Log In</button>
                         <br>
 
                         <a href="/">← Back To Home</a>
@@ -31,3 +32,32 @@
 
     </div>
 </div>
+
+<script> $("#login-btn").on("click", function (event) {
+            event.preventDefault();
+            if()
+            var User = {
+                name: $("#item-name").val().trim(),
+                description: $("#item-description").val().trim(),
+                condition: $("#item-condition").val(),
+                category: $("#item-category").val(),
+                price: $("#item-price").val(),
+                imageUrl: imgUrl,
+                UserId: userId,
+                location: $("#item-location").val().trim()
+            };
+            console.log(newItem);
+
+            $.ajax("/api/items", {
+                type: "POST",
+                data: newItem
+            }).then(
+                function () {
+                    $("#item-modal").modal();
+                    setTimeout(reload, 5000);
+
+                }
+            );
+
+
+        });</script>

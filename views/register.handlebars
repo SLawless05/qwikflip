@@ -22,16 +22,16 @@
 
                         <div class="form-group">
                             <label for="password">Password: </label>
-                            <input type="password" id="password" password="password">
+                            <input type="text" id="password" password="password">
                         </div>
                         <br>
 
                         <div class="form-group">
                             <label for="confirm">Confirm Password: </label>
-                            <input type="password" id="confirm" confirm="confirm">
+                            <input type="text" id="confirm" confirm="confirm">
                         </div>
 
-                        <button type="submit">Sign Up</button>
+                        <button type="submit" id="signup-btn">Sign Up</button>
 
                         <br>
 
@@ -44,3 +44,28 @@
 
     </div>
 </div>
+<script> $("#signup-btn").on("click", function (event) {
+            event.preventDefault();
+            if(password === confirm){
+            var newUser = {
+                name: $("#name").val().trim(),
+                email: $("#email").val().trim(),
+                password: $("password").val()
+            };
+            console.log(newItem);
+
+            $.ajax("/api/users", {
+                type: "POST",
+                data: newUser
+            }).then(
+                function () {
+                    $("#item-modal").modal();
+                    setTimeout(reload, 5000);
+
+                }
+            );
+            }
+            else(//modal)
+
+
+        });</script>
