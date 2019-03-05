@@ -1,9 +1,9 @@
 <br>
 <div class="container">
-    <div class="row">
-        <div class="col">
+    <div class="row justify-content-center">
+        <div class="col-6">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header text-center">
                     Register
                 </div>
                 <div class="card-body">
@@ -22,16 +22,16 @@
 
                         <div class="form-group">
                             <label for="password">Password: </label>
-                            <input type="text" id="password" password="password">
+                            <input type="password" id="password" password="password">
                         </div>
                         <br>
 
                         <div class="form-group">
                             <label for="confirm">Confirm Password: </label>
-                            <input type="text" id="confirm" confirm="confirm">
+                            <input type="password" id="confirm" confirm="confirm">
                         </div>
 
-                        <button type="submit">Sign Up</button>
+                        <button id="signup-btn" class="btn btn-primary" type="submit">Sign Up</button>
 
                         <br>
 
@@ -44,3 +44,31 @@
 
     </div>
 </div>
+
+<script>
+
+    $("#signup-btn").on("click", function(event){
+        event.preventDefault();
+        var newUser = {
+            name: $("#name").val().trim(),
+            email: $("#email").val().trim(),
+            password: $("#password").val().trim(),
+            
+        }
+        var confirm = $("#confirm").val().trim();
+
+        if(newUser.password === confirm){
+            $.ajax("/api/users", {
+                type: "POST",
+                data: newUser
+            }).then(function(){
+                $("#name").val("");
+                $("#email").val("");
+                $("#password").val("");
+                $("#confirm").val("");
+                window.location.replace("/login");
+            })
+        }
+    })
+
+</script>
