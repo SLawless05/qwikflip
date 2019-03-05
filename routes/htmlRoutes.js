@@ -1,9 +1,15 @@
 var db = require("../models");
 
+// Requiring our custom middleware for checking if a user is logged in
+var isAuthenticated = require("../config/middleware/isAuthenticated");
+
 module.exports = function (app) {
   // Load index page
   app.get("/", function (req, res) {
     db.Item.findAll({ include: [db.User] }).then(function (data) {
+      if(req.user){
+        res.redirect("/members");
+      }
       res.render("index", {
         items: data
       });
@@ -17,6 +23,9 @@ module.exports = function (app) {
 
   app.get("/login", function (req, res) {
     // res.sendfile("public/html/login.html");
+    if (req.user) {
+      res.redirect("/members");
+    }
     res.render("login");
   });
 
@@ -80,5 +89,9 @@ module.exports = function (app) {
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {
     res.render("404");
+  });
+
+  app.get("/members", isAuthenticated, function(req, res) {
+    res.sendFile(path.join(__dirname, "../public/members.html"));
   });
 };
