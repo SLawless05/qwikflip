@@ -1,0 +1,192 @@
+<div class="modal" id="item-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Congratulations!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Your Item has been posted.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div class="card">
+                <h5 class="card-header">Post an Item</h5>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="item-name">Item Name</label>
+                            <input type="text" class="form-control" id="item-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="item-description">Description</label>
+                            <textarea class="form-control" id="item-description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-condition">Item Condition</label>
+                            <select class="form-control" id="item-condition">
+                                <option value="true">Used</option>
+                                <option value="false">New</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-category">Category</label>
+                            <select class="form-control" id="item-category">
+                                <option>Electronics</option>
+                                <option>Furniture</option>
+                                <option>Cars</option>
+                                <option>Appliances</option>
+                                <option>Bicycles</option>
+                                <option>Cell Phones</option>
+                                <option>Video Games</option>
+                                <option>TVs</option>
+                                <option>Jewelry</option>
+                                <option>Toys</option>
+                                <option>Collectibles</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-price">Price ($)</label>
+                            <input type="number" class="form-control" id="item-price">
+                        </div>
+                        <div class="form-group">
+                            <label for="item-location">Location</label>
+                            <input type="text" class="form-control" id="item-location">
+                        </div>
+                        <div class="card text-center">
+                            <div class="card-body justify-content-center">
+                                <h5 class="card-title">Upload a Photo of Your Item</h5>
+
+                                <label class="btn btn-secondary" id="upload-btn" for="fileButton">Upload</label><input
+                                    type="file" value="upload" id="fileButton" style="display:none" />
+                                <div id="warningImg"></div>
+                                <br>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary"
+                                        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                        style="width: 0%">0%</div>
+                                </div>
+                                <div id="uploadBttn"></div>
+                            </div>
+                        </div>
+                        <br>
+                        <button id="post-btn" type="submit" class="btn btn-primary col text-center">Submit</button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br>
+
+<div id="userid" data-id="{{UserId}}"></div>
+
+<script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+<script>
+    $(document).ready(function () {
+        var config = {
+            apiKey: "AIzaSyDr_MEnKQLxl3yz8WJiBfaspAcF8c4_fa0",
+            authDomain: "qwikflip-617c6.firebaseapp.com",
+            databaseURL: "https://qwikflip-617c6.firebaseio.com",
+            projectId: "qwikflip-617c6",
+            storageBucket: "qwikflip-617c6.appspot.com",
+            messagingSenderId: "694522373372"
+        };
+        firebase.initializeApp(config);
+        var storageRef;
+        var userId = $("#userid").data("id");
+        var imgUrl;
+        var fileButton = $("#fileButton");
+        var imageExtensions = ["jpg", "png", "jpeg"];
+        fileButton.on("change", function (e) {
+            var file = e.target.files[0];
+            var imgExt = file.name.split(".").pop();
+            $("#warningImg").empty();
+
+            if (imageExtensions.includes(imgExt)) {
+                storageRef = firebase.storage().ref('photos/' + file.name + userId);
+                console.log("File Name: " + file.name);
+
+                storageRef.put(file);
+
+
+
+                storageRef.put(file).on('state_changed', function progress(snapshot) {
+                    var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+
+                    $(".progress-bar").attr("aria-valuenow", percentage);
+                    $(".progress-bar").attr("style", "width: " + percentage + "%");
+                    $(".progress-bar").text(Math.round(percentage) + "%");
+                    if (percentage === 100) {
+                        $("#upload-btn").remove();
+                        var status = $("<h5>").addClass("text-success").text("Photo is uploaded.");
+                        $("#uploadBttn").append(status);
+
+                        var storage = firebase.storage();
+                        var pathReference = storage.ref('photos/' + file.name + userId);
+                        pathReference.getDownloadURL().then(function (url) {
+                            console.log("URL: " + url);
+                            imgUrl = url;
+
+
+                        }).catch(function (error) {
+
+                        });
+
+                    }
+                })
+
+            } else {
+                $("#warningImg").append($("<p>").addClass("text-danger").text("Invalid File. Acceptable extensions are .png, .jpg and .jpeg"));
+            }
+        });
+
+        $("#post-btn").on("click", function (event) {
+            event.preventDefault();
+            var newItem = {
+                name: $("#item-name").val().trim(),
+                description: $("#item-description").val().trim(),
+                condition: $("#item-condition").val(),
+                category: $("#item-category").val(),
+                price: $("#item-price").val(),
+                imageUrl: imgUrl,
+                UserId: userId,
+                location: $("#item-location").val().trim()
+            };
+            console.log(newItem);
+
+            $.ajax("/api/items", {
+                type: "POST",
+                data: newItem
+            }).then(
+                function () {
+                    $("#item-modal").modal();
+                    setTimeout(reload, 5000);
+
+                }
+            );
+
+
+        });
+
+        function reload(){
+            location.reload();
+        }
+
+
+
+    });
+</script>
