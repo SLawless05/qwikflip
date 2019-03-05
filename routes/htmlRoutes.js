@@ -36,6 +36,10 @@ module.exports = function (app) {
     db.Item.findAll({ include: [db.User], where: req.params }).then(data => res.render("account", { items: data })).catch(err => res.json(err));
   });
 
+  app.get("/newitem/:UserId", function(req, res){
+    res.render("postItem", req.params);
+  })
+
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {
     res.render("404");
