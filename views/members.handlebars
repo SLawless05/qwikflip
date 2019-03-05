@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Qwik Flip</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/members/account">My Account</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Log Out</a>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+<br>
+<div class="container">
+  <div class="row">
+
+    {{#each items}}
+
+    <div class="card col-3 mr-3">
+      <img src="{{imageUrl}}" class="card-img-top" alt="{{name}}">
+      <div class="card-body">
+        <h5 class="card-title">{{name}}</h5>
+        <h4 class="card-title">${{price}}</h4>
+        <p class="card-text">{{location}}</p>
+        <a href="/items/{{id}}" class="btn btn-primary">Details</a>
+      </div>
+
+    </div>
+
+    {{/each}}
+
+
+  </div>
+</div>

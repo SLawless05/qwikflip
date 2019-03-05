@@ -35,13 +35,40 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/users/:UserId", function (req, res) {
-    db.User.findOne({ where: { id: req.params.UserId } }).then(function(result){
+  app.get("/logout", function(req, res){
+    // req.logout();
+    res.redirect("/");
+  })
 
-      db.Item.findAll({ include: [db.User], where: req.params }).then(data => res.render("account", { items: data,
-      user: result}))
 
-    }).catch(err => res.json(err))
+  app.get("/members", function(req, res){
+    if(req.user){
+      db.Item.findAll({ include: [db.User] }).then(function (data) {
+        res.render("members", {
+          items: data
+        });
+      });
+
+
+    }else{
+      res.redirect("/login");
+    }
+  })
+
+  app.get("/members/account", function (req, res) {
+   
+    if(req.user){
+      db.User.findOne({ where: { id: req.user.id } }).then(function(result){
+
+        db.Item.findAll({ include: [db.User], where: {UserId: req.user.id} }).then(data => res.render("account", { items: data,
+        user: result}))
+  
+      }).catch(err => res.json(err))
+
+    }else{
+      res.redirect("/login");
+    }
+    
       
     
   });
