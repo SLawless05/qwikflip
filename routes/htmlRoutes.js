@@ -20,6 +20,10 @@ module.exports = function (app) {
     res.render("login");
   });
 
+  app.get("/account", function (req, res) {
+    res.render("account");
+  })
+
   // Load singleitem page and pass in an item by id
   app.get("/items/:id", function (req, res) {
     db.Item.findOne({ include: [db.User], where: { id: req.params.id } }).then(function (data) {
