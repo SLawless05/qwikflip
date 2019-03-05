@@ -33,31 +33,42 @@
     </div>
 </div>
 
-<script> $("#login-btn").on("click", function (event) {
-            event.preventDefault();
-            if()
-            var User = {
-                name: $("#item-name").val().trim(),
-                description: $("#item-description").val().trim(),
-                condition: $("#item-condition").val(),
-                category: $("#item-category").val(),
-                price: $("#item-price").val(),
-                imageUrl: imgUrl,
-                UserId: userId,
-                location: $("#item-location").val().trim()
-            };
-            console.log(newItem);
+<script>
+    $(document).ready(function() {
+  // Getting references to our form and inputs
+  var loginForm = $("#login-btn");
+ 
 
-            $.ajax("/api/items", {
-                type: "POST",
-                data: newItem
-            }).then(
-                function () {
-                    $("#item-modal").modal();
-                    setTimeout(reload, 5000);
+  // When the form is submitted, we validate there's an email and password entered
+  loginForm.on("click", function(event) {
+    event.preventDefault();
+    var userData = {
+      email: $("#loginEmail").val().trim(),
+      password: $("#loginPassword").val().trim()
+    };
 
-                }
-            );
+    if (!userData.email || !userData.password) {
+      return;
+    }
 
+    // If we have an email and password we run the loginUser function and clear the form
+    loginUser(userData.email, userData.password);
+    $("#loginEmail").val("");
+    $("#loginPassword").val("");
+  });
 
-        });</script>
+  // loginUser does a post to our "api/login" route and if successful, redirects us the the members page
+  function loginUser(email, password) {
+    $.post("/api/login", {
+      email: email,
+      password: password
+    }).then(function(data) {
+      window.location.replace(data);
+      // If there's an error, log the error
+    }).catch(function(err) {
+      console.log(err);
+    });
+  }
+
+});
+</script>

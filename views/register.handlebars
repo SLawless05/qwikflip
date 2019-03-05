@@ -1,9 +1,9 @@
 <br>
 <div class="container">
-    <div class="row">
-        <div class="col">
+    <div class="row justify-content-center">
+        <div class="col-6">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header text-center">
                     Register
                 </div>
                 <div class="card-body">
@@ -22,16 +22,16 @@
 
                         <div class="form-group">
                             <label for="password">Password: </label>
-                            <input type="text" id="password" password="password">
+                            <input type="password" id="password" password="password">
                         </div>
                         <br>
 
                         <div class="form-group">
                             <label for="confirm">Confirm Password: </label>
-                            <input type="text" id="confirm" confirm="confirm">
+                            <input type="password" id="confirm" confirm="confirm">
                         </div>
 
-                        <button type="submit" id="signup-btn">Sign Up</button>
+                        <button id="signup-btn" class="btn btn-primary" type="submit">Sign Up</button>
 
                         <br>
 
@@ -44,28 +44,46 @@
 
     </div>
 </div>
-<script> $("#signup-btn").on("click", function (event) {
-            event.preventDefault();
-            if(password === confirm){
-            var newUser = {
-                name: $("#name").val().trim(),
-                email: $("#email").val().trim(),
-                password: $("password").val()
-            };
-            console.log(newItem);
 
-            $.ajax("/api/users", {
-                type: "POST",
-                data: newUser
-            }).then(
-                function () {
-                    $("#item-modal").modal();
-                    setTimeout(reload, 5000);
+<script>
 
-                }
-            );
-            }
-            else(//modal)
+   $(document).ready(function() {
+  // Getting references to our form and input
+  var signUpForm = $("form.signup");
 
+  // When the signup button is clicked, we validate the email and password are not blank
+  signUpForm.on("submit", function(event) {
+    event.preventDefault();
+    var userData = {
+      email: $("#email").val().trim(),
+      password: $("#password").val().trim()
+    };
 
-        });</script>
+    if (!userData.email || !userData.password) {
+      return;
+    }
+    // If we have an email and password, run the signUpUser function
+    signUpUser(userData.email, userData.password);
+    emailInput.val("");
+    passwordInput.val("");
+  });
+
+  // Does a post to the signup route. If successful, we are redirected to the members page
+  // Otherwise we log any errors
+  function signUpUser(email, password) {
+    $.post("/api/signup", {
+      email: email,
+      password: password
+    }).then(function(data) {
+      window.location.replace(data);
+      // If there's an error, handle it by throwing up a bootstrap alert
+    }).catch(handleLoginErr);
+  }
+
+  function handleLoginErr(err) {
+    $("#alert .msg").text(err.responseJSON);
+    $("#alert").fadeIn(500);
+  }
+});
+
+</script>
