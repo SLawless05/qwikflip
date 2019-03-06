@@ -40,13 +40,15 @@
 
                         {{#each items}}
 
-                        <div class="card col-3 mr-3">
+                        <div class="card col-3 m-1">
                             <img src="{{imageUrl}}" class="card-img-top" alt="{{name}}">
                             <div class="card-body">
                                 <h5 class="card-title">{{name}}</h5>
                                 <h4 class="card-title">${{price}}</h4>
                                 <p class="card-text">{{location}}</p>
-                                <button data-id="{{id}}" class="btn btn-primary bg-danger delete-btn"> Delete</button>
+
+                                <button data-id="{{id}}" class="btn btn-primary delete-btn"> Delete</button>
+
                                 <a href="/items/update/{{id}}"><button data-id="{{id}}"
                                         class="btn btn-primary edit-btn">Edit</button></a>
                             </div>
@@ -67,6 +69,7 @@
 <script>
     $(".delete-btn").on("click", function (event) {
         event.preventDefault();
+
         var theId = {
             id: $(this).data("id")
         }
@@ -76,6 +79,7 @@
         $.ajax("/api/items", {
             type: "DELETE",
             data: theId
+
         }).then(function () {
             console.log("item deleted");
             location.reload();
