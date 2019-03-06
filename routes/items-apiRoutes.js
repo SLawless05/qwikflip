@@ -76,7 +76,7 @@ module.exports = function (app) {
 
   //Edit a post
   app.put("/api/items", function (req, res) {
-    console.log(req.body);
+
     db.Item.update(req.body, { where: { id: req.body.id } }).then(function (data) {
       res.send("Success");
     }).catch(err => res.send(err));
@@ -86,7 +86,7 @@ module.exports = function (app) {
   app.delete("/api/items", function (req, res) {
 
     db.Item.destroy({
-      where: req.body
+      where: { id: req.body.id }
     }).then(function (data) {
       res.send("Success");
     }).catch(err => res.send(err));
