@@ -17,14 +17,9 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
     "mysql2": "^1.6.4",
-<<<<<<< HEAD
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "sequelize": "^4.43.0"
-=======
-    "passport-local": "^1.0.0",
     "sequelize": "^4.41.2"
->>>>>>> e5f3ddb6fe454e6b8e56faa7af41502b79dd165c
   },
   "devDependencies": {
     "chai": "^4.1.2",
