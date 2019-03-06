@@ -68,6 +68,10 @@
     $(".delete-btn").on("click", event => {
         event.preventDefault();
 
+        console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        console.log(this.data);
+        console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+
         $.ajax("/api/items", {
             type: "DELETE",
             data: { id: $(this).data("id") }
