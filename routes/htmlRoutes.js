@@ -34,7 +34,7 @@ module.exports = function (app) {
 
     } else {
       res.redirect("/login");
-     }
+    }
 
 
   });
@@ -91,7 +91,35 @@ module.exports = function (app) {
       res.redirect("/login");
     }
   })
-  app.get("/members/:category", isAuthenticated, function (req, res) {
+
+
+
+  app.get("/members/account", function (req, res) {
+
+    if (req.user) {
+      db.User.findOne({ where: { id: req.user.id } }).then(function (result) {
+
+        db.Item.findAll({ include: [db.User], where: { UserId: req.user.id } }).then(function (data) {
+          console.log("DATA:  " + data);
+          console.log("RESULT:  " + result);
+          res.render("account", {
+            items: data,
+            user: result
+          })
+        });
+
+      }).catch(err => res.json(err))
+
+    } else {
+      res.redirect("/login");
+    }
+
+
+
+  });
+
+
+  app.get("/members/category/:category", isAuthenticated, function (req, res) {
     if (req.user) {
       db.Item.findAll({ include: [db.User] }).then(function (data) {
         res.render("members", {
@@ -104,26 +132,6 @@ module.exports = function (app) {
       res.redirect("/login");
     }
   })
-
-  app.get("/members/account", function (req, res) {
-
-    if (req.user) {
-      db.User.findOne({ where: { id: req.user.id } }).then(function (result) {
-
-        db.Item.findAll({ include: [db.User], where: { UserId: req.user.id } }).then(data => res.render("account", {
-          items: data,
-          user: result
-        }))
-
-      }).catch(err => res.json(err))
-
-    } else {
-      res.redirect("/login");
-    }
-
-
-
-  });
 
   app.get("/newitem", function (req, res) {
     if (req.user) {
