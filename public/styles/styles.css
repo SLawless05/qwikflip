@@ -83,3 +83,7 @@ body {
 a {
   color: #dff9fb!important;
 }
+
+.dropdown-item {
+  color: black!important;
+}

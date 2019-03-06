@@ -71,9 +71,9 @@ module.exports = function (app) {
       res.redirect("/login");
     }
   })
-  app.get("/members/:category", isAuthenticated, function (req, res) {
+  app.get("/members/category/:category", isAuthenticated, function (req, res) {
     if (req.user) {
-      db.Item.findAll({ include: [db.User] }).then(function (data) {
+      db.Item.findAll({ include: [db.User], where: req.params}).then(function (data) {
         res.render("members", {
           items: data
         });
