@@ -1,0 +1,83 @@
+<div class="modal" id="item-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Success!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Your message has been sent.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div class="card">
+                <h5 class="card-header">Message</h5>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="item-name">Subject</label>
+                            <input type="text" class="form-control" id="subject" value="{{subject}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="item-description">Message</label>
+                            <textarea class="form-control" id="email-body" rows="3"></textarea>
+                        </div>
+
+                        <br>
+                        <button id="send-btn" type="submit" class="btn btn-primary col text-center">Send</button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br>
+
+<div id="toemail" data-email="{{toEmail}}" hidden></div>
+<div id="fromemail" data-email="{{fromEmail}}" hidden></div>
+
+<script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#send-btn").on("click", function (event) {
+            event.preventDefault();
+            var payload = {
+                to: $("#toemail").data("email"),
+                subject: $("#subject").val().trim(),
+                // "text": "hello world!",
+                text: $("#email-body").val().trim(),
+                from: $("#fromemail").data("email")
+            }
+
+            
+
+            $.ajax("/sendmessage", {
+                type: "POST",
+                data: payload
+            }).then(function (data) {
+                if (data) {
+                    $("#item-modal").modal();
+                    setTimeout(reload, 1500);
+                }
+
+            }).catch(err => console.log(err));
+        })
+    });
+
+    function reload(){
+        window.location.replace("/");
+    }
+</script>

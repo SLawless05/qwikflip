@@ -1,19 +1,21 @@
 var db = require("../models");
 var passport = require("../config/passport");
+const sendmail = require('sendmail')();
+
 module.exports = function (app) {
 
-  app.post("/api/login", passport.authenticate("local"), function(req, res) {
+  app.post("/api/login", passport.authenticate("local"), function (req, res) {
     // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
     // So we're sending the user back the route to the members page because the redirect will happen on the front end
     // They won't get this or even be able to access this page if they aren't authed
     res.json("/members");
   });
-  
-  app.post("/api/signup", function(req, res) {
+
+  app.post("/api/signup", function (req, res) {
     console.log(req.body);
-    db.User.create(req.body).then(function() {
+    db.User.create(req.body).then(function () {
       res.redirect(307, "/api/login");
-    }).catch(function(err) {
+    }).catch(function (err) {
       console.log(err);
       res.json(err);
       // res.status(422).json(err.errors[0].message);
@@ -21,13 +23,13 @@ module.exports = function (app) {
   });
 
   // Route for logging user out
-  app.get("/logout", function(req, res) {
+  app.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/");
   });
 
   // Route for getting some data about our user to be used client side
-  app.get("/api/user_data", function(req, res) {
+  app.get("/api/user_data", function (req, res) {
     if (!req.user) {
       // The user is not logged in, send back an empty object
       res.json({});
@@ -44,13 +46,13 @@ module.exports = function (app) {
 
   // Get all posts
   app.get("/api/items", function (req, res) {
-    db.Item.findAll({include: [db.User]}).then(function (data) {
+    db.Item.findAll({ include: [db.User] }).then(function (data) {
       res.json(data);
     }).catch(err => res.json(err));
   });
   // Get all by category
   app.get("/api/items/:category", function (req, res) {
-    db.Item.findAll({include: [db.User], where: req.params }).then(function (data) {
+    db.Item.findAll({ include: [db.User], where: req.params }).then(function (data) {
       res.json(data);
     }).catch(err => res.json(err));
   });
@@ -67,13 +69,13 @@ module.exports = function (app) {
   });
   // Get one post by id
   app.get("/api/items/:id", function (req, res) {
-    db.Item.findOne({include: [db.User], where: req.params }).then(function (data) {
+    db.Item.findOne({ include: [db.User], where: req.params }).then(function (data) {
       res.json(data);
     }).catch(err => res.json(err));
   });
   // Get all posts of a user
   app.get("/api/items/:UserId", function (req, res) {
-    db.Item.findAll({include: [db.User], where: req.params }).then(function (data) {
+    db.Item.findAll({ include: [db.User], where: req.params }).then(function (data) {
       res.json(data);
     }).catch(err => res.json(err));
   });
@@ -86,17 +88,30 @@ module.exports = function (app) {
   });
 
   //Edit a post
-  app.put("/api/items", function(req, res){
-    
-    db.Item.update(req.body, {where: {id: req.body.id}}).then(function(data){
+  app.put("/api/items", function (req, res) {
+
+    db.Item.update(req.body, { where: { id: req.body.id } }).then(function (data) {
       res.send("Success");
     }).catch(err => res.send(err));
+  });
+
+  app.post("/sendmessage", function (req, res) {
+    if (req.user) {
+
+      sendmail(req.body, function (err, reply) {
+        console.log(err && err.stack);
+        console.dir(reply);
+        res.send(true);
+      });
+    } else {
+      res.redirect("/login");
+    }
   });
 
   // Delete a post by id
   app.delete("/api/items", function (req, res) {
     db.Item.destroy({
-      where: {id: req.body.id}
+      where: { id: req.body.id }
     }).then(function (data) {
       res.send("Success");
     }).catch(err => res.send(err));

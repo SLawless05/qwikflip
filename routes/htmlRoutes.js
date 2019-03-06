@@ -19,6 +19,26 @@ module.exports = function (app) {
 
   });
 
+  app.get("/message/:id", function (req, res) {
+    if (req.user) {
+      db.Item.findOne({ include: [db.User], where: req.params }).then(function (data) {
+        var emailData = {
+          subject: data.name,
+          fromEmail: req.user.email,
+          toEmail: data.User.email
+        }
+
+        res.render("message", emailData);
+
+      }).catch(err => res.json(err));
+
+    } else {
+      res.redirect("/login");
+    }
+
+
+  });
+
   app.get("/signup", function (req, res) {
     res.render("register");
 
@@ -34,13 +54,13 @@ module.exports = function (app) {
 
   app.get("/items/update/:id", function (req, res) {
     db.Item.findOne({ include: [db.User], where: req.params }).then(function (data) {
-      if(req.user.id === data.dataValues.UserId){
+      if (req.user.id === data.dataValues.UserId) {
         res.render("updateItem", data.dataValues);
-      }else{
+      } else {
         res.redirect("/");
       }
-      
-      
+
+
     }).catch();
   })
 
@@ -80,20 +100,20 @@ module.exports = function (app) {
       });
 
 
-    } else {
-      res.redirect("/login");
-    }
-  })
 
   app.get("/members/account", function (req, res) {
 
     if (req.user) {
       db.User.findOne({ where: { id: req.user.id } }).then(function (result) {
 
-        db.Item.findAll({ include: [db.User], where: { UserId: req.user.id } }).then(data => res.render("account", {
-          items: data,
-          user: result
-        }))
+        db.Item.findAll({ include: [db.User], where: { UserId: req.user.id } }).then(function (data) {
+          console.log("DATA:  " + data);
+          console.log("RESULT:  " + result);
+          res.render("account", {
+            items: data,
+            user: result
+          })
+        });
 
       }).catch(err => res.json(err))
 
@@ -104,6 +124,21 @@ module.exports = function (app) {
 
 
   });
+
+
+  app.get("/members/category/:category", isAuthenticated, function (req, res) {
+    if (req.user) {
+      db.Item.findAll({ include: [db.User] }).then(function (data) {
+        res.render("members", {
+          items: data
+        });
+      });
+
+
+    } else {
+      res.redirect("/login");
+    }
+  })
 
   app.get("/newitem", function (req, res) {
     if (req.user) {
