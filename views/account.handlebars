@@ -39,6 +39,7 @@
                     <div class="row">
 
                         {{#each items}}
+                        {{#unless sold}}
 
                         <div class="card col-3 m-1">
                             <img src="{{imageUrl}}" class="card-img-top" alt="{{name}}">
@@ -46,15 +47,56 @@
                                 <h5 class="card-title">{{name}}</h5>
                                 <h4 class="card-title">${{price}}</h4>
                                 <p class="card-text">{{location}}</p>
-
+                                <button data-id="{{id}}" class="col btn btn-primary sold-btn mb-3">Mark as Sold</button>
                                 <button data-id="{{id}}" class="btn btn-primary delete-btn"> Delete</button>
 
                                 <a href="/items/update/{{id}}"><button data-id="{{id}}"
                                         class="btn btn-primary edit-btn">Edit</button></a>
+
+
                             </div>
 
                         </div>
+                        {{/unless}}
+                        {{/each}}
 
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    Sold Items
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                        {{#each items}}
+                        {{#if sold}}
+
+                        <div class="card col-3 m-1">
+                            <img src="{{imageUrl}}" class="card-img-top" alt="{{name}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{name}}</h5>
+                                <h4 class="card-title">${{price}}</h4>
+                                <p class="card-text">{{location}}</p>
+                                <button data-id="{{id}}" class="col btn btn-primary repost-btn mb-3">Repost</button>
+                                <button data-id="{{id}}" class="btn btn-primary delete-btn"> Delete</button>
+
+                                <a href="/items/update/{{id}}"><button data-id="{{id}}"
+                                        class="btn btn-primary edit-btn">Edit</button></a>
+
+
+                            </div>
+
+                        </div>
+                        {{/if}}
                         {{/each}}
 
 
@@ -85,7 +127,43 @@
             location.reload();
         })
 
-    })
+    });
+
+    $(".sold-btn").on("click", function(event){
+        event.preventDefault();
+        var theId = {
+            id: $(this).data("id"),
+            sold: true
+        }
+
+        $.ajax("/api/items", {
+            type: "PUT",
+            data: theId
+
+        }).then(function () {
+           
+            location.reload();
+        })
+
+    });
+
+    $(".repost-btn").on("click", function(event){
+        event.preventDefault();
+        var theId = {
+            id: $(this).data("id"),
+            sold: false
+        }
+
+        $.ajax("/api/items", {
+            type: "PUT",
+            data: theId
+
+        }).then(function () {
+            
+            location.reload();
+        })
+
+    });
 
 
 </script>
