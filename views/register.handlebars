@@ -1,98 +1,161 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- Modal -->
+<div class="modal" id="item-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ERROR</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Your Email/Password doesn't match what we have on file.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <br>
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-6">
-            <div class="card">
-                <div class="card-header text-center">
-                    Register
-                </div>
-                <div class="card-body">
-                    <form class="create-form">
-                        <div class="form-group">
-                            <label for="name">Name: </label>
-                            <input type="text" id="name" name="name">
-                        </div>
-                        <br>
-
-                        <div class="form-group">
-                            <label for="email">Email: </label>
-                            <input type="text" id="email" email="email">
-                        </div>
-                        <br>
-
-                        <div class="form-group">
-                            <label for="password">Password: </label>
-                            <input type="password" id="password" password="password">
-                        </div>
-                        <br>
-
-                        <div class="form-group">
-                            <label for="confirm">Confirm Password: </label>
-                            <input type="password" id="confirm" confirm="confirm">
-                        </div>
-
-                        <button id="signup-btn" class="btn btn-primary" type="submit">Sign Up</button>
-
-                        <br>
-
-                        <a href="/">← Back To Home</a>
-
-                    </form>
-                </div>
-            </div>
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header text-center">
+          Register
         </div>
+        <div class="card-body">
+          <form class="create-form">
+            <div class="form-group">
+              <label for="name">Name: </label>
+              <input type="text" id="name" name="name">
+            </div>
+            <br>
 
+            <div class="form-group">
+              <label for="email">Email: </label>
+              <input type="text" id="email" email="email">
+            </div>
+            <br>
+
+            <div class="form-group">
+              <label for="password">Password: </label>
+              <input type="password" id="password" password="password">
+            </div>
+            <br>
+
+            <div class="form-group">
+              <label for="confirm">Confirm Password: </label>
+              <input type="password" id="confirm" confirm="confirm">
+            </div>
+
+            <button id="signup-btn" class="btn btn-primary" type="submit">Sign Up</button>
+
+            <br>
+
+            <a href="/">← Back To Home</a>
+
+          </form>
+        </div>
+      </div>
     </div>
+
+  </div>
 </div>
 
 <script>
 
-   $(document).ready(function() {
-  // Getting references to our form and input
-  
+  $(document).ready(function () {
+    // Getting references to our form and input
 
-  // When the signup button is clicked, we validate the email and password are not blank
-  $("#signup-btn").on("click", function(event) {
-    event.preventDefault();
-    var userData = {
-      name: $("#name").val().trim(),
-      email: $("#email").val().trim(),
-      password: $("#password").val().trim()
-    };
 
-    if(userData.password !== $("#confirm").val().trim()){
-      return;
-      
+    // When the signup button is clicked, we validate the email and password are not blank
+    $("#signup-btn").on("click", function (event) {
+      event.preventDefault();
+      var userData = {
+        name: $("#name").val().trim(),
+        email: $("#email").val().trim(),
+        password: $("#password").val().trim()
+      };
+
+      {
+
+        if (userData.password !== $("#confirm").val().trim()) {
+          $(".modal-body").text("Error: passwords do not match eachother");
+
+          $("#modal-photo").attr("src", "lel.png");
+
+          $("#modal-photo").attr("alt", "Error: passwords do not match eachother");
+
+          console.log("password error");
+          //return;
+        }
+
+        if (!userData.email || !userData.password || !userData.name) {
+          $(".modal-body").text("Error: all fields are required");
+
+          $("#modal-photo").attr("src", "lel.png");
+
+          $("#modal-photo").attr("alt", "Error: all fields are required");
+          //return;
+          console.log("field error");
+        }
+
+        var isEmail = false;
+
+        for (i = 0; i < email.length; i++) {
+          if (email[i] === "@") {
+            isEmail = true;
+          }
+        }
+
+        if (!isEmail) {
+          $(".modal-body").text("Error: not a valid email");
+
+          $("#modal-photo").attr("src", "lel.png");
+
+          $("#modal-photo").attr("alt", "Error: not a valid email");
+
+          console.log("email error");
+        }
+
+
+
+        // If we have an email and password, run the signUpUser function
+        signUpUser(userData.name, userData.email, userData.password);
+        $("#name").val("");
+        $("#email").val("");
+        $("#password").val("");
+        $("#confirm").val("");
+      });
+
+    // Does a post to the signup route. If successful, we are redirected to the members page
+    // Otherwise we log any errors
+    function signUpUser(name, email, password) {
+      $.post("/api/signup", {
+        name: name,
+        email: email,
+        password: password
+      }).then(function (data) {
+        window.location.replace(data);
+        // If there's an error, handle it by throwing up a bootstrap alert
+      }).catch(handleLoginErr);
     }
 
-    if (!userData.email || !userData.password || !userData.name) {
-      return;
+    function handleLoginErr(err) {
+      //$("#alert .msg").text(err.responseJSON);
+      //$("#alert").fadeIn(500);
+
+      $("#item-modal").modal();
+
     }
-    // If we have an email and password, run the signUpUser function
-    signUpUser(userData.name, userData.email, userData.password);
-    $("#name").val("");
-    $("#email").val("");
-    $("#password").val("");
-    $("#confirm").val("");
   });
-
-  // Does a post to the signup route. If successful, we are redirected to the members page
-  // Otherwise we log any errors
-  function signUpUser(name, email, password) {
-    $.post("/api/signup", {
-      name: name,
-      email: email,
-      password: password
-    }).then(function(data) {
-      window.location.replace(data);
-      // If there's an error, handle it by throwing up a bootstrap alert
-    }).catch(handleLoginErr);
-  }
-
-  function handleLoginErr(err) {
-    $("#alert .msg").text(err.responseJSON);
-    $("#alert").fadeIn(500);
-  }
-});
 
 </script>
