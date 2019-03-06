@@ -19,6 +19,26 @@ module.exports = function (app) {
 
   });
 
+  app.get("/message/:id", function (req, res) {
+    if (req.user) {
+      db.Item.findOne({ include: [db.User], where: req.params }).then(function (data) {
+        var emailData = {
+          subject: data.name,
+          fromEmail: req.user.email,
+          toEmail: data.User.email
+        }
+
+        res.render("message", emailData);
+
+      }).catch(err => res.json(err));
+
+    } else {
+      res.redirect("/login");
+     }
+
+
+  });
+
   app.get("/signup", function (req, res) {
     res.render("register");
 
@@ -34,13 +54,13 @@ module.exports = function (app) {
 
   app.get("/items/update/:id", function (req, res) {
     db.Item.findOne({ include: [db.User], where: req.params }).then(function (data) {
-      if(req.user.id === data.dataValues.UserId){
+      if (req.user.id === data.dataValues.UserId) {
         res.render("updateItem", data.dataValues);
-      }else{
+      } else {
         res.redirect("/");
       }
-      
-      
+
+
     }).catch();
   })
 
