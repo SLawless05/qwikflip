@@ -174,7 +174,7 @@
             }).then(
                 function () {
                     $("#item-modal").modal();
-                    setTimeout(reload, 5000);
+                    setTimeout(reload, 1500);
 
                 }
             );
@@ -183,7 +183,7 @@
         });
 
         function reload(){
-            location.reload();
+            window.location.replace("/members/account");
         }
 
 
