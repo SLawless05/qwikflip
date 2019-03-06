@@ -34,8 +34,13 @@ module.exports = function (app) {
 
   app.get("/items/update/:id", function (req, res) {
     db.Item.findOne({ include: [db.User], where: req.params }).then(function (data) {
-      res.render("updateItem", data.dataValues);
-      console.log(data.dataValues);
+      if(req.user.id === data.dataValues.UserId){
+        res.render("updateItem", data.dataValues);
+      }else{
+        res.redirect("/");
+      }
+      
+      
     }).catch();
   })
 
