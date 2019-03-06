@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">Qwik Flip</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -24,7 +23,7 @@
     <div class="row">
         <div class="col mb-3">
             <h1>Hi, {{user.name}}</h1>
-            <a href="/newitem" class="btn btn-primary" >Post an Item</a>
+            <a href="/newitem" class="btn btn-primary">Post an Item</a>
 
 
         </div>
@@ -47,7 +46,7 @@
                                 <h5 class="card-title">{{name}}</h5>
                                 <h4 class="card-title">${{price}}</h4>
                                 <p class="card-text">{{location}}</p>
-                                <button data-id="{{id}}" class="btn btn-primary bg-danger delete-btn"> Delete</button>
+                                <button data-id="{{id}}" class="btn btn-primary delete-btn"> Delete</button>
                                 <a href="/items/update/{{id}}"><button data-id="{{id}}"
                                         class="btn btn-primary edit-btn">Edit</button></a>
                             </div>

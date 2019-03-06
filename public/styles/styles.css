@@ -1,3 +1,24 @@
+/* COLOR PALLETE
+
+lblue =  #686de0
+dblue = #4834d4
+
+lgrey = #95afc0
+dgrey = #535c68
+
+lorange = #ffbe76
+dorange = #f0932b
+
+offwhite = #dff9fb
+
+dpink = #eb4d4b
+lpink = #ff7979
+
+dteal = #7ed6df
+lteal = #22a6b3
+
+*/
+
 .list-group-item {
   line-height: 2.5;
 }
@@ -5,4 +26,60 @@
 .col-3 {
   flex: 0 0 24% !important;
   max-width: 24% !important;
+}
+
+.navbar {
+  background-color: #535c68!important;
+  color: #dff9fb!important;
+
+}
+
+.navbar-brand:hover {
+  color: #4834d4!important;
+}
+
+.navbar-brand {
+  color: #f0932b!important;
+}
+
+.nav-link {
+  color:  #dff9fb!important;
+}
+
+.container {
+  background-color: #95afc0!important;
+}
+
+body {
+  background-color: #95afc0!important;
+}
+
+.card {
+  border-color: #dff9fb!important;
+  background-color: #535c68!important;
+  color:  #dff9fb!important;
+}
+
+.btn {
+  background-color: #4834d4!important;
+  border-color: #686de0!important;
+}
+
+.btn:hover {
+  background-color: #f0932b!important;
+  border-color: #f0932b!important;
+}
+
+.delete-btn {
+  background-color: #eb4d4b!important;
+  border-color: #ff7979!important;
+}
+
+.delete-btn:hover {
+  background-color: #7ed6df!important;
+  border-color: #22a6b3!important;
+}
+
+a {
+  color: #dff9fb!important;
 }
