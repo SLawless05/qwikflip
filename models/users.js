@@ -7,7 +7,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       validate: {
         len: [2],
-        isAlpha: true,
+        // isAlpha: true,
       }
     },
     email: {
@@ -35,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
     return bcrypt.compareSync(password, this.password);
   };
 
-  User.hook("beforeCreate", function (user) {
+  User.addHook("beforeCreate", function (user) {
     user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
   });
 
