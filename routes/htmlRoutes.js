@@ -6,14 +6,17 @@ var isAuthenticated = require("../config/middleware/isAuthenticated");
 module.exports = function (app) {
   // Load index page
   app.get("/", function (req, res) {
-    db.Item.findAll({ include: [db.User] }).then(function (data) {
-      if(req.user){
-        res.redirect("/members");
-      }
-      res.render("index", {
-        items: data
+
+    if (req.user) {
+      res.redirect("/members");
+    } else {
+      db.Item.findAll({ include: [db.User] }).then(function (data) {
+        res.render("index", {
+          items: data
+        });
       });
-    });
+    }
+
   });
 
   app.get("/signup", function (req, res) {
@@ -29,8 +32,8 @@ module.exports = function (app) {
     res.render("login");
   });
 
-  app.get("/items/update/:id", function(req, res){
-    db.Item.findOne({include: [db.User], where: req.params}).then(function(data){
+  app.get("/items/update/:id", function (req, res) {
+    db.Item.findOne({ include: [db.User], where: req.params }).then(function (data) {
       res.render("updateItem", data.dataValues);
       console.log(data.dataValues);
     }).catch();
@@ -44,14 +47,14 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/logout", function(req, res){
+  app.get("/logout", function (req, res) {
     // req.logout();
     res.redirect("/");
   })
 
 
-  app.get("/members", function(req, res){
-    if(req.user){
+  app.get("/members", isAuthenticated, function (req, res) {
+    if (req.user) {
       db.Item.findAll({ include: [db.User] }).then(function (data) {
         res.render("members", {
           items: data
@@ -59,39 +62,47 @@ module.exports = function (app) {
       });
 
 
-    }else{
+    } else {
       res.redirect("/login");
     }
   })
 
   app.get("/members/account", function (req, res) {
-   
-    if(req.user){
-      db.User.findOne({ where: { id: req.user.id } }).then(function(result){
 
-        db.Item.findAll({ include: [db.User], where: {UserId: req.user.id} }).then(data => res.render("account", { items: data,
-        user: result}))
-  
+    if (req.user) {
+      db.User.findOne({ where: { id: req.user.id } }).then(function (result) {
+
+        db.Item.findAll({ include: [db.User], where: { UserId: req.user.id } }).then(data => res.render("account", {
+          items: data,
+          user: result
+        }))
+
       }).catch(err => res.json(err))
 
-    }else{
+    } else {
       res.redirect("/login");
     }
-    
-      
-    
+
+
+
   });
 
-  app.get("/newitem/:UserId", function (req, res) {
-    res.render("postItem", req.params);
+  app.get("/newitem", function (req, res) {
+    if (req.user) {
+      res.render("postItem", { UserId: req.user.id });
+
+    } else {
+      res.redirect("/login");
+    }
+
   })
+
+
 
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {
     res.render("404");
   });
 
-  app.get("/members", isAuthenticated, function(req, res) {
-    res.sendFile(path.join(__dirname, "../public/members.html"));
-  });
+
 };
