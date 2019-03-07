@@ -23,7 +23,7 @@
           Categories
         </a>
 
-        <div id="dropdown" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <div id="dropdown" class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuLink">
 
           <a class="dropdown-item" href="/category/Antiques">Antiques</a>
           <a class="dropdown-item" href="/category/Appliances">Appliances</a>
@@ -98,9 +98,10 @@
   $(".dropdown-item").on("click", function (event) {
     event.preventDefault();
     console.log("click worked");
-
-    var category = $(this).text();
-    $.ajax("/api/items/category/"+ category, {
+    console.log(event.target.outerText)
+    var category = event.target.outerText;
+    $.ajax("/category/"+ category, {
+    //  $.ajax("/api/items/category/"+ category, {
       method: "GET",
      headers: {
        "Access-Control-Allow-Origin": "*"
@@ -112,7 +113,7 @@
     .then(function (data, status) {
      console.log("Here is the data: ", data);
      console.log("Here is the status: " + status);
-
+    location.replace("/category/"+ category);
     });
 
 

@@ -4,6 +4,16 @@ var db = require("../models");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function (app) {
+
+  // app.get("/members/category/:category", isAuthenticated, function (req, res) {
+  //   if (req.user) {
+  //     db.Item.findAll({ include: [db.User], where: req.params }).then(function (data) {
+  //       res.render("members", {
+  //         items: data
+  //       });
+  //     });
+  //   }
+  // })
   // Load index page
   app.get("/", function (req, res) {
 
@@ -17,18 +27,6 @@ module.exports = function (app) {
       });
     }
 
-  });
-
-  app.get("/category/:category", function(req, res) {
-    console.log(req.params);
-    db.Item.findAll({
-      where: {
-        category: req.params.category
-      }
-    })
-      .then(function(dbItem) {
-        res.render("index", {items: dbItem});
-      });
   });
 
   app.get("/message/:id", function (req, res) {
@@ -103,73 +101,72 @@ module.exports = function (app) {
       res.redirect("/login");
     }
   })
-  app.get("/members/category/:category", isAuthenticated, function (req, res) {
+  
+
+
+  app.get("/members/account", function (req, res) {
+
     if (req.user) {
+      db.User.findOne({ where: { id: req.user.id } }).then(function (result) {
+
+        db.Item.findAll({ include: [db.User], where: { UserId: req.user.id } }).then(function (data) {
+          console.log("DATA:  " + data);
+          console.log("RESULT:  " + result);
+          res.render("account", {
+            items: data,
+            user: result
+          })
+        });
+
+      }).catch(err => res.json(err))
+
+    } else {
+      res.redirect("/login");
+    }
+
+
+
+  });
+
+
+
+  app.get("/category/:category", function (req, res) {
+    if(req.user){
+      console.log("if")
       db.Item.findAll({ include: [db.User], where: req.params }).then(function (data) {
         res.render("members", {
           items: data
-        });
+        })
+    });
+  }else{
+    console.log("else")
+      db.Item.findAll({ include: [db.User], where: req.params }).then(function (data) {
+      res.render("index", {
+        items: data
       });
-   }  })
+    });
+    }
+    
+  });
 
+    app.get("/newitem", function (req, res) {
+      if (req.user) {
+        res.render("postItem", { UserId: req.user.id });
 
-      app.get("/members/account", function (req, res) {
+      } else {
+        res.redirect("/login");
+      }
 
-        if (req.user) {
-          db.User.findOne({ where: { id: req.user.id } }).then(function (result) {
-
-            db.Item.findAll({ include: [db.User], where: { UserId: req.user.id } }).then(function (data) {
-              console.log("DATA:  " + data);
-              console.log("RESULT:  " + result);
-              res.render("account", {
-                items: data,
-                user: result
-              })
-            });
-
-          }).catch(err => res.json(err))
-
-        } else {
-          res.redirect("/login");
-        }
+    })
 
 
 
-      });
-
-
-      app.get("/members/category/:category", isAuthenticated, function (req, res) {
-        if (req.user) {
-          db.Item.findAll({ include: [db.User] }).then(function (data) {
-            res.render("members", {
-              items: data
-            });
-          });
-
-
-        } else {
-          res.redirect("/login");
-        }
-      })
-
-      app.get("/newitem", function (req, res) {
-        if (req.user) {
-          res.render("postItem", { UserId: req.user.id });
-
-        } else {
-          res.redirect("/login");
-        }
-
-      })
+    // Render 404 page for any unmatched routes
+    app.get("*", function (req, res) {
+      res.render("404");
+    });
 
 
 
-      // Render 404 page for any unmatched routes
-      app.get("*", function (req, res) {
-        res.render("404");
-      });
 
-
- 
-
-};
+  };

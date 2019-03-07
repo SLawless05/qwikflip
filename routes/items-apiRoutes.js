@@ -66,6 +66,7 @@ module.exports = function (app) {
     })
       .then(function(dbItem) {
         res.json(dbItem);
+        //res.render("item", dbItem)
       });
   });
   // Get one post by id
