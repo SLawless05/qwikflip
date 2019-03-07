@@ -85,7 +85,7 @@
 
       if (userData.password !== $("#confirm").val().trim()) {
         $(".modal-body").text("Error: passwords do not match eachother");
-        $("#modal-photo").attr("src", "lel.png");
+        $("#modal-photo").attr("src", "..public/images/error.png");
         $("#modal-photo").attr("alt", "Error: passwords do not match eachother");
 
         console.log("password error");
@@ -95,7 +95,7 @@
 
       if (!userData.email || !userData.password || !userData.name) {
         $(".modal-body").text("Error: all fields are required");
-        $("#modal-photo").attr("src", "lel.png");
+        $("#modal-photo").attr("src", "..public/images/error.png");
         $("#modal-photo").attr("alt", "Error: all fields are required");
 
         console.log("field error");
@@ -113,7 +113,7 @@
 
       if (!isEmail) {
         $(".modal-body").text("Error: not a valid email");
-        $("#modal-photo").attr("src", "lel.png");
+        $("#modal-photo").attr("src", "..public/images/error.png");
         $("#modal-photo").attr("alt", "Error: not a valid email");
 
         console.log("email error");
@@ -149,7 +149,7 @@
         }
         else {
           $(".modal-body").text(data.errors[0].message);
-          $("#modal-photo").attr("src", "lel.png");
+          $("#modal-photo").attr("src", "..public/images/error.png");
           $("#modal-photo").attr("alt", data.errors[0].message);
           $("#item-modal").modal();
         }

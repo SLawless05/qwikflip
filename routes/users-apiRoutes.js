@@ -14,17 +14,6 @@ module.exports = function (app) {
     }).catch(err => res.json(err));
   });
 
-  // Checks if a user exists by email returns true/false
-  app.get("/api/users/exists", function (req, res) {
-    db.User.findOne({
-      where: {
-        email: req.body.email,
-      }
-    }).then(function (data) {
-      res.json(data)
-    }).catch(err => res.json(err));
-  });
-
   app.get("/api/users/:UserId", function (req, res) {
     db.Item.findAll({ include: [db.User], where: req.params }).then(data => res.json(data)).catch(err => res.json(err));
   })
