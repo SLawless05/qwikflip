@@ -206,7 +206,7 @@
                 $(".modal-body").text("Item name is a required field");
                 errorToss = true;
             }
-            else if (newItem.price < 0) {
+            else if (newItem.price < 0 || !newItem.price) {
                 $(".modal-title").text("Error");
                 $(".modal-body").text("Price must be 0 or greater");
                 errorToss = true;
