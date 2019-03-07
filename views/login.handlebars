@@ -22,27 +22,27 @@
     <div class="row justify-content-center">
         <div class="col-4">
             <div class="card">
-                <div class="card-header">
-                    Log In
+                <div class="card-header text-center">
+                    <h5><i class="fas fa-sign-in-alt"></i> Login</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body text-center">
                     <form class="create-form">
                         <div class="form-group">
-                            <label for="loginEmail">Email: </label>
-                            <input type="text" id="loginEmail" loginEmail="loginEmail">
+                            <label for="loginEmail">Email </label>
+                            <input class="form-control" type="text" id="loginEmail" loginEmail="loginEmail">
                         </div>
-                        <br>
+                        
 
                         <div class="form-group">
-                            <label for="loginPassword">Password: </label>
-                            <input type="password" id="loginPassword" loginPassword="loginPassword">
+                            <label for="loginPassword">Password </label>
+                            <input class="form-control" type="password" id="loginPassword" loginPassword="loginPassword">
 
                         </div>
 
-                        <button type="submit" id="login-btn">Log In</button>
-                        <br>
+                        <button class="btn btn-primary col mb-3" type="submit" id="login-btn">Log In</button>
+                       
 
-                        <a href="/">← Back To Home</a>
+                        <a href="/"><i class="fas fa-home"></i> Back To Home</a>
                     </form>
                 </div>
             </div>
@@ -90,4 +90,6 @@
   }
 
 });
+
+$("#thetitle").text("Log In | Qwik Flip");
 </script>
