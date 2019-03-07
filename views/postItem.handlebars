@@ -125,18 +125,17 @@
 
 <div id="userid" data-id="{{UserId}}"></div>
 
-<script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
+
 <script>
     $(document).ready(function () {
-        var config = {
-            apiKey: "AIzaSyDr_MEnKQLxl3yz8WJiBfaspAcF8c4_fa0",
-            authDomain: "qwikflip-617c6.firebaseapp.com",
-            databaseURL: "https://qwikflip-617c6.firebaseio.com",
-            projectId: "qwikflip-617c6",
-            storageBucket: "qwikflip-617c6.appspot.com",
-            messagingSenderId: "694522373372"
-        };
-        firebase.initializeApp(config);
+        
+        
+        $.ajax("/api/firebase", {
+            type: "GET"
+        }).then(function (config) {
+            firebase.initializeApp(config);
+        })
+
         var storageRef;
         var userId = $("#userid").data("id");
         var imgUrl;

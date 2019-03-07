@@ -1,8 +1,31 @@
+require("dotenv").config();
 var db = require("../models");
 var passport = require("../config/passport");
-const sendmail = require('sendmail')();
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.email,
+    pass: process.env.pass
+  },
+  tls: { rejectUnauthorized: false }
+});
 
 module.exports = function (app) {
+
+  app.get("/api/firebase", function (req, res) {
+    var config = {
+      apiKey: process.env.firebase_apikey,
+      authDomain: "qwikflip-617c6.firebaseapp.com",
+      databaseURL: "https://qwikflip-617c6.firebaseio.com",
+      projectId: "qwikflip-617c6",
+      storageBucket: "qwikflip-617c6.appspot.com",
+      messagingSenderId: "694522373372"
+    };
+
+    res.json(config);
+  })
 
   app.post("/api/login", passport.authenticate("local"), function (req, res) {
     // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
@@ -100,11 +123,16 @@ module.exports = function (app) {
   app.post("/sendmessage", function (req, res) {
     if (req.user) {
 
-      sendmail(req.body, function (err, reply) {
-        console.log(err && err.stack);
-        console.dir(reply);
-        res.send(true);
+      transporter.sendMail(req.body, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+          res.send(true);
+        }
       });
+
+
     } else {
       res.redirect("/login");
     }

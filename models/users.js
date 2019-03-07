@@ -26,12 +26,21 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: {
+
+        len:{
           args: [6, 16],
-          msg: 'Your password must be 6-16 characters in length'
-        }
-      },
-    }
+          msg: 'Password should be between 6-16 characters.'
+        } 
+      }
+    },
+    image: {
+      type: DataTypes.STRING,
+      defaultValue: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
+      validate: {
+          isUrl: true,
+      }
+  },
+
   });
 
   User.prototype.validPassword = function (password) {
