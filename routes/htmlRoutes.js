@@ -20,7 +20,7 @@ module.exports = function (app) {
     if (req.user) {
       res.redirect("/members");
     } else {
-      db.Item.findAll({ include: [db.User] }).then(function (data) {
+      db.Item.findAll({ include: [db.User], order: [["id", "DESC"]] }).then(function (data) {
         res.render("index", {
           items: data
         });
@@ -90,7 +90,7 @@ module.exports = function (app) {
 
   app.get("/members", isAuthenticated, function (req, res) {
     if (req.user) {
-      db.Item.findAll({ include: [db.User] }).then(function (data) {
+      db.Item.findAll({ include: [db.User], order: [["id", "DESC"]] }).then(function (data) {
         res.render("members", {
           items: data
         });
