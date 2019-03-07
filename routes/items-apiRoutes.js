@@ -58,6 +58,7 @@ module.exports = function (app) {
   });
   // load all posts of one category
   app.get("/api/items/category/:category", function(req, res) {
+    console.log(req.params);
     db.Item.findAll({
       where: {
         category: req.params.category
@@ -110,6 +111,7 @@ module.exports = function (app) {
 
   // Delete a post by id
   app.delete("/api/items", function (req, res) {
+
     db.Item.destroy({
       where: { id: req.body.id }
     }).then(function (data) {

@@ -5,6 +5,7 @@ var exphbs = require("express-handlebars");
 
 var passport = require("./config/passport");
 var session = require("express-session");
+var cors = require('cors');
 
 var db = require("./models");
 
@@ -18,6 +19,8 @@ var PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
+
+app.use(cors())
 
 //Session
 app.use(session({
