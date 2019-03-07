@@ -54,7 +54,7 @@
 
             <button id="signup-btn" class="col btn btn-primary mb-3" type="submit">Sign Up</button>
 
-            
+
 
             <a href="/"><i class="fas fa-home"></i> Back To Home</a>
 
@@ -145,13 +145,14 @@
         password: password
       }).then(function (data) {
         console.log(data);
-        if (data.errors.length === 0) {
+        if (!data.errors) {
           window.location.replace(data);
         }
         else {
           $(".modal-body").text(data.errors[0].message);
           $("#modal-photo").attr("src", "/images/error.png");
           $("#modal-photo").attr("alt", data.errors[0].message);
+          $("#item-modal").modal();
         }
 
         // If there's an error, handle it by throwing up a bootstrap alert

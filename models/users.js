@@ -26,8 +26,11 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [6, 16]
-      }
+        len: {
+          args: [6, 16],
+          msg: 'Your password must be 6-16 characters in length'
+        }
+      },
     }
   });
 
