@@ -16,6 +16,12 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
+
+        sold: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
+        
         category: {
             type: DataTypes.STRING,
             allowNull: false,

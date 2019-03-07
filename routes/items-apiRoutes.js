@@ -1,5 +1,7 @@
 var db = require("../models");
 var passport = require("../config/passport");
+const sendmail = require('sendmail')();
+
 module.exports = function (app) {
 
   app.post("/api/login", passport.authenticate("local"), function (req, res) {
@@ -80,6 +82,19 @@ module.exports = function (app) {
     db.Item.update(req.body, { where: { id: req.body.id } }).then(function (data) {
       res.send("Success");
     }).catch(err => res.send(err));
+  });
+
+  app.post("/sendmessage", function (req, res) {
+    if (req.user) {
+
+      sendmail(req.body, function (err, reply) {
+        console.log(err && err.stack);
+        console.dir(reply);
+        res.send(true);
+      });
+    } else {
+      res.redirect("/login");
+    }
   });
 
   // Delete a post by id

@@ -10,12 +10,14 @@
       <li class="nav-item active">
         <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
       </li>
+
       <li class="nav-item">
         <a class="nav-link" href="/signup">Sign Up</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/login">Log In</a>
       </li>
+
 
     </ul>
   </div>
@@ -26,6 +28,7 @@
   <div class="row">
 
     {{#each items}}
+    {{#unless sold}}
 
     <div class="card col-3 m-1">
       <img src="{{imageUrl}}" class="card-img-top" alt="{{name}}">
@@ -37,7 +40,7 @@
       </div>
 
     </div>
-
+    {{/unless}}
     {{/each}}
 
 

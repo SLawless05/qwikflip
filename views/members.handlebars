@@ -26,6 +26,7 @@
   <div class="row">
 
     {{#each items}}
+    {{#unless sold}}
 
     <div class="card col-3 m-1">
       <img src="{{imageUrl}}" class="card-img-top" alt="{{name}}">
@@ -37,7 +38,7 @@
       </div>
 
     </div>
-
+    {{/unless}}
     {{/each}}
 
 
