@@ -67,7 +67,7 @@ body {
 
 .btn:hover {
   background-color: #f0932b!important;
-  border-color: #f0932b!important;
+  border-color: #ffbe76!important;
 }
 
 .delete-btn {
@@ -80,6 +80,10 @@ body {
   border-color: #22a6b3!important;
 }
 
+h1 {
+  color: #686de0!important;
+}
+
 a {
-  color: #dff9fb!important;
+  color: #f0932b!important;
 }

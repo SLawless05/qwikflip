@@ -1,103 +1,167 @@
+<!-- Modal -->
+<div class="modal" id="item-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ERROR</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Unknown Error</p>
+      </div>
+      <img id="modal-photo" src="" alt="">
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <br>
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-6">
-            <div class="card">
-                <div class="card-header text-center">
-                    <h5><i class="fas fa-user-plus"></i> Sign Up</h5>
-                </div>
-                <div class="card-body text-center">
-                    <form class="create-form">
-                        <div class="form-group">
-                            <label for="name">Name </label>
-                            <input  class="form-control"  type="text" id="name" name="name">
-                        </div>
-                        <br>
-
-                        <div class="form-group">
-                            <label for="email">Email </label>
-                            <input  class="form-control" type="email" id="email" email="email">
-                        </div>
-                        <br>
-
-                        <div class="form-group">
-                            <label for="password">Password </label>
-                            <input  class="form-control" type="password" id="password" password="password">
-                        </div>
-                        <br>
-
-                        <div class="form-group">
-                            <label for="confirm">Confirm Password </label>
-                            <input class="form-control"  type="password" id="confirm" confirm="confirm">
-                        </div>
-
-                        <button id="signup-btn" class="col btn btn-primary mb-3" type="submit">Sign Up</button>
-
-                        
-
-                        <a href="/"><i class="fas fa-home"></i> Back To Home</a>
-
-                    </form>
-                </div>
-            </div>
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-header text-center">
+          Register
         </div>
+        <div class="card-body">
+          <form class="create-form">
+            <div class="form-group">
+              <label for="name">Name: </label>
+              <input type="text" id="name" name="name">
+            </div>
+            <br>
 
+            <div class="form-group">
+              <label for="email">Email: </label>
+              <input type="text" id="email" email="email">
+            </div>
+            <br>
+
+            <div class="form-group">
+              <label for="password">Password: </label>
+              <input type="password" id="password" password="password">
+            </div>
+            <br>
+
+            <div class="form-group">
+              <label for="confirm">Confirm Password: </label>
+              <input type="password" id="confirm" confirm="confirm">
+            </div>
+
+            <button id="signup-btn" class="btn btn-primary" type="submit">Sign Up</button>
+
+            <br>
+
+            <a href="/">← Back To Home</a>
+
+          </form>
+        </div>
+      </div>
     </div>
+
+  </div>
 </div>
 
 <script>
 
-   $(document).ready(function() {
-  // Getting references to our form and input
-  
+  $(document).ready(function () {
+    // Getting references to our form and input
 
-  // When the signup button is clicked, we validate the email and password are not blank
-  $("#signup-btn").on("click", function(event) {
-    event.preventDefault();
-    var userData = {
-      name: $("#name").val().trim(),
-      email: $("#email").val().trim(),
-      password: $("#password").val().trim()
-    };
 
-    if(userData.password !== $("#confirm").val().trim()){
-      return;
-      
-    }
+    // When the signup button is clicked, we validate the email and password are not blank
+    $("#signup-btn").on("click", function (event) {
+      event.preventDefault();
+      var userData = {
+        name: $("#name").val().trim(),
+        email: $("#email").val().trim(),
+        password: $("#password").val().trim()
+      };
 
-    if (!userData.email || !userData.password || !userData.name) {
-      return;
-    }
-    // If we have an email and password, run the signUpUser function
-    signUpUser(userData.name, userData.email, userData.password);
-    $("#name").val("");
-    $("#email").val("");
-    $("#password").val("");
-    $("#confirm").val("");
-  });
+      var throwError = false;
 
-  // Does a post to the signup route. If successful, we are redirected to the members page
-  // Otherwise we log any errors
-  function signUpUser(name, email, password) {
-    $.post("/api/signup", {
-      name: name,
-      email: email,
-      password: password
-    }).then(function(data) {
-      console.log(data);
-      if(data.errors.length === 0){
-         window.location.replace(data);       
+      if (userData.password !== $("#confirm").val().trim()) {
+        $(".modal-body").text("Error: passwords do not match eachother");
+        $("#modal-photo").attr("src", "/images/error.png");
+        $("#modal-photo").attr("alt", "Error: passwords do not match eachother");
+
+        console.log("password error");
+
+        throwError = true;
       }
-     
-      // If there's an error, handle it by throwing up a bootstrap alert
-    }).catch(handleLoginErr);
-  }
 
-  function handleLoginErr(err) {
-    console.log(err.responseJSON);
-    
-  }
-});
-$("#thetitle").text("Sign Up | Qwik Flip");
+      if (!userData.email || !userData.password || !userData.name) {
+        $(".modal-body").text("Error: all fields are required");
+        $("#modal-photo").attr("src", "/images/error.png");
+        $("#modal-photo").attr("alt", "Error: all fields are required");
+
+        console.log("field error");
+
+        throwError = true;
+      }
+
+      var isEmail = false;
+
+      for (i = 0; i < userData.email.length; i++) {
+        if (userData.email[i] === "@") {
+          isEmail = true;
+        }
+      }
+
+      if (!isEmail) {
+        $(".modal-body").text("Error: not a valid email");
+        $("#modal-photo").attr("src", "/images/error.png");
+        $("#modal-photo").attr("alt", "Error: not a valid email");
+
+        console.log("email error");
+
+        throwError = true;
+      }
+
+      if (!throwError) {
+
+        // If we have an email and password, run the signUpUser function
+        signUpUser(userData.name, userData.email, userData.password);
+        $("#name").val("");
+        $("#email").val("");
+        $("#password").val("");
+        $("#confirm").val("");
+
+      }
+      else {
+        $("#item-modal").modal();
+      }
+    });
+
+    // Does a post to the signup route. If successful, we are redirected to the members page
+    // Otherwise we log any errors
+    function signUpUser(name, email, password) {
+      $.post("/api/signup", {
+        name: name,
+        email: email,
+        password: password
+      }).then(function (data) {
+        console.log(data);
+        if (data.errors.length === 0) {
+          window.location.replace(data);
+        }
+        else {
+          $(".modal-body").text(data.errors[0].message);
+          $("#modal-photo").attr("src", "/images/error.png");
+          $("#modal-photo").attr("alt", data.errors[0].message);
+        }
+
+        // If there's an error, handle it by throwing up a bootstrap alert
+      }).catch(handleLoginErr);
+    }
+    function handleLoginErr(err) {
+      console.log(err.responseJSON);
+
+    }
+  });
+  $("#thetitle").text("Sign Up | Qwik Flip");
+
 </script>
