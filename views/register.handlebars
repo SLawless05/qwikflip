@@ -85,7 +85,7 @@
 
       if (userData.password !== $("#confirm").val().trim()) {
         $(".modal-body").text("Error: passwords do not match eachother");
-        $("#modal-photo").attr("src", "..public/images/error.png");
+        $("#modal-photo").attr("src", "/images/error.png");
         $("#modal-photo").attr("alt", "Error: passwords do not match eachother");
 
         console.log("password error");
@@ -95,7 +95,7 @@
 
       if (!userData.email || !userData.password || !userData.name) {
         $(".modal-body").text("Error: all fields are required");
-        $("#modal-photo").attr("src", "..public/images/error.png");
+        $("#modal-photo").attr("src", "/images/error.png");
         $("#modal-photo").attr("alt", "Error: all fields are required");
 
         console.log("field error");
@@ -113,7 +113,7 @@
 
       if (!isEmail) {
         $(".modal-body").text("Error: not a valid email");
-        $("#modal-photo").attr("src", "..public/images/error.png");
+        $("#modal-photo").attr("src", "/images/error.png");
         $("#modal-photo").attr("alt", "Error: not a valid email");
 
         console.log("email error");
@@ -144,19 +144,24 @@
         email: email,
         password: password
       }).then(function (data) {
-        if (data.errors.length === 0 || undefined) {
+        console.log(data);
+        if (data.errors.length === 0) {
           window.location.replace(data);
         }
         else {
           $(".modal-body").text(data.errors[0].message);
-          $("#modal-photo").attr("src", "..public/images/error.png");
+          $("#modal-photo").attr("src", "/images/error.png");
           $("#modal-photo").attr("alt", data.errors[0].message);
-          $("#item-modal").modal();
         }
-      }).catch(function (err) {
-        console.log(err);
-      });
+
+        // If there's an error, handle it by throwing up a bootstrap alert
+      }).catch(handleLoginErr);
+    }
+    function handleLoginErr(err) {
+      console.log(err.responseJSON);
+
     }
   });
+  $("#thetitle").text("Sign Up | Qwik Flip");
 
 </script>
