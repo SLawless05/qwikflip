@@ -4,6 +4,16 @@ var db = require("../models");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function (app) {
+
+  // app.get("/members/category/:category", isAuthenticated, function (req, res) {
+  //   if (req.user) {
+  //     db.Item.findAll({ include: [db.User], where: req.params }).then(function (data) {
+  //       res.render("members", {
+  //         items: data
+  //       });
+  //     });
+  //   }
+  // })
   // Load index page
   app.get("/", function (req, res) {
 
@@ -91,7 +101,7 @@ module.exports = function (app) {
       res.redirect("/login");
     }
   })
-
+  
 
 
   app.get("/members/account", function (req, res) {
@@ -119,36 +129,44 @@ module.exports = function (app) {
   });
 
 
-  app.get("/members/category/:category", isAuthenticated, function (req, res) {
-    if (req.user) {
-      db.Item.findAll({ include: [db.User] }).then(function (data) {
+
+  app.get("/category/:category", function (req, res) {
+    if(req.user){
+      console.log("if")
+      db.Item.findAll({ include: [db.User], where: req.params }).then(function (data) {
         res.render("members", {
           items: data
-        });
+        })
+    });
+  }else{
+    console.log("else")
+      db.Item.findAll({ include: [db.User], where: req.params }).then(function (data) {
+      res.render("index", {
+        items: data
       });
-
-
-    } else {
-      res.redirect("/login");
+    });
     }
-  })
-
-  app.get("/newitem", function (req, res) {
-    if (req.user) {
-      res.render("postItem", { UserId: req.user.id });
-
-    } else {
-      res.redirect("/login");
-    }
-
-  })
-
-
-
-  // Render 404 page for any unmatched routes
-  app.get("*", function (req, res) {
-    res.render("404");
+    
   });
 
+    app.get("/newitem", function (req, res) {
+      if (req.user) {
+        res.render("postItem", { UserId: req.user.id });
 
-};
+      } else {
+        res.redirect("/login");
+      }
+
+    })
+
+
+
+    // Render 404 page for any unmatched routes
+    app.get("*", function (req, res) {
+      res.render("404");
+    });
+
+
+
+
+  };
