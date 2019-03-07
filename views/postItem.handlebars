@@ -1,27 +1,27 @@
 <div class="modal" id="item-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Congratulations!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Your Item has been posted.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Congratulations!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Your Item has been posted.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <br>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-8">
             <div class="card">
-                <h5 class="card-header">Post an Item</h5>
+                <h5 class="card-header text-center">Post an Item</h5>
                 <div class="card-body">
                     <form>
                         <div class="form-group">
@@ -83,7 +83,7 @@
                                 <option>Wedding</option>
 
 
-                                
+
                             </select>
                         </div>
                         <div class="form-group">
@@ -111,7 +111,8 @@
                             </div>
                         </div>
                         <br>
-                        <button id="post-btn" type="submit" class="btn btn-primary col text-center">Submit</button>
+                        <button id="post-btn" type="submit" class="btn btn-primary col text-center mb-3">Submit</button>
+                        <a href="/"><i class="fas fa-home"></i> Back To Home</a>
 
                     </form>
                 </div>
@@ -213,11 +214,13 @@
 
         });
 
-        function reload(){
+        function reload() {
             window.location.replace("/members/account");
         }
 
 
 
     });
+
+    $("#thetitle").text("Post Item | Qwik Flip");
 </script>
