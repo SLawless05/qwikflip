@@ -79,6 +79,19 @@ module.exports = function (app) {
       res.json(data);
     }).catch(err => res.json(err));
   });
+  // load all posts of one category
+  app.get("/api/items/category/:category", function(req, res) {
+    console.log(req.params);
+    db.Item.findAll({
+      where: {
+        category: req.params.category
+      }
+    })
+      .then(function(dbItem) {
+        res.json(dbItem);
+        //res.render("item", dbItem)
+      });
+  });
   // Get one post by id
   app.get("/api/items/:id", function (req, res) {
     db.Item.findOne({ include: [db.User], where: req.params }).then(function (data) {

@@ -87,3 +87,14 @@ h1 {
 a {
   color: #f0932b!important;
 }
+
+.dropdown-item {
+  color: black!important;
+  
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
+}
