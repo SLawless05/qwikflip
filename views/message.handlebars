@@ -59,7 +59,7 @@
                 to: $("#toemail").data("email"),
                 subject: $("#subject").val().trim(),
                 // "text": "hello world!",
-                text: $("#email-body").val().trim(),
+                html: "<p>" + $("#email-body").val().trim() + "</p><br><br><h4>You can email me at <a href='#'>" + $("#fromemail").data("email") + "</a></h4>",
                 from: $("#fromemail").data("email")
             }
 

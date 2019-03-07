@@ -26,16 +26,22 @@ module.exports = function (app) {
   });
 
   //Edit a user's info
-  app.put("api/users", function (req, res) {
-    db.User.update(req.body, { where: { id: req.body.id } }).then(function (data) {
+  app.put("/api/users", function (req, res) {
+    db.User.update(req.body, { where: { id: req.user.id } }).then(function (data) {
       res.json(data);
     }).catch(err => res.json(err));
   })
 
   // Delete a user
-  app.delete("/api/users/:id", function (req, res) {
-    db.User.destroy({ where: req.params }).then(function (data) {
+  app.delete("/api/users", function (req, res) {
+    req.logout();
+    db.User.destroy({
+      where: {
+        id: req.body
+      }
+    }).then(function (data) {
       res.json(data);
+      
     }).catch(err => res.json(err));
   });
 };
