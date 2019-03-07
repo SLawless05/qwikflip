@@ -1,8 +1,3 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://code.jquery.com/jquery.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
 <!-- Modal -->
 <div class="modal" id="item-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
@@ -14,8 +9,9 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Your Email/Password doesn't match what we have on file.</p>
+        <p>Unknown Error</p>
       </div>
+      <img id="modal-photo" src="" alt="">
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
@@ -85,48 +81,47 @@
         password: $("#password").val().trim()
       };
 
-      {
+      var throwError = false;
 
-        if (userData.password !== $("#confirm").val().trim()) {
-          $(".modal-body").text("Error: passwords do not match eachother");
+      if (userData.password !== $("#confirm").val().trim()) {
+        $(".modal-body").text("Error: passwords do not match eachother");
+        $("#modal-photo").attr("src", "lel.png");
+        $("#modal-photo").attr("alt", "Error: passwords do not match eachother");
 
-          $("#modal-photo").attr("src", "lel.png");
+        console.log("password error");
 
-          $("#modal-photo").attr("alt", "Error: passwords do not match eachother");
+        throwError = true;
+      }
 
-          console.log("password error");
-          //return;
+      if (!userData.email || !userData.password || !userData.name) {
+        $(".modal-body").text("Error: all fields are required");
+        $("#modal-photo").attr("src", "lel.png");
+        $("#modal-photo").attr("alt", "Error: all fields are required");
+
+        console.log("field error");
+
+        throwError = true;
+      }
+
+      var isEmail = false;
+
+      for (i = 0; i < userData.email.length; i++) {
+        if (userData.email[i] === "@") {
+          isEmail = true;
         }
+      }
 
-        if (!userData.email || !userData.password || !userData.name) {
-          $(".modal-body").text("Error: all fields are required");
+      if (!isEmail) {
+        $(".modal-body").text("Error: not a valid email");
+        $("#modal-photo").attr("src", "lel.png");
+        $("#modal-photo").attr("alt", "Error: not a valid email");
 
-          $("#modal-photo").attr("src", "lel.png");
+        console.log("email error");
 
-          $("#modal-photo").attr("alt", "Error: all fields are required");
-          //return;
-          console.log("field error");
-        }
+        throwError = true;
+      }
 
-        var isEmail = false;
-
-        for (i = 0; i < email.length; i++) {
-          if (email[i] === "@") {
-            isEmail = true;
-          }
-        }
-
-        if (!isEmail) {
-          $(".modal-body").text("Error: not a valid email");
-
-          $("#modal-photo").attr("src", "lel.png");
-
-          $("#modal-photo").attr("alt", "Error: not a valid email");
-
-          console.log("email error");
-        }
-
-
+      if (!throwError) {
 
         // If we have an email and password, run the signUpUser function
         signUpUser(userData.name, userData.email, userData.password);
@@ -134,7 +129,12 @@
         $("#email").val("");
         $("#password").val("");
         $("#confirm").val("");
-      });
+
+      }
+      else {
+        $("#item-modal").modal();
+      }
+    });
 
     // Does a post to the signup route. If successful, we are redirected to the members page
     // Otherwise we log any errors
@@ -144,17 +144,18 @@
         email: email,
         password: password
       }).then(function (data) {
-        window.location.replace(data);
-        // If there's an error, handle it by throwing up a bootstrap alert
-      }).catch(handleLoginErr);
-    }
-
-    function handleLoginErr(err) {
-      //$("#alert .msg").text(err.responseJSON);
-      //$("#alert").fadeIn(500);
-
-      $("#item-modal").modal();
-
+        if (data.errors.length === 0 || undefined) {
+          window.location.replace(data);
+        }
+        else {
+          $(".modal-body").text(data.errors[0].message);
+          $("#modal-photo").attr("src", "lel.png");
+          $("#modal-photo").attr("alt", data.errors[0].message);
+          $("#item-modal").modal();
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
     }
   });
 
