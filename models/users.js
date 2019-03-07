@@ -26,6 +26,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+
         len:{
           args: [6, 16],
           msg: 'Password should be between 6-16 characters.'
@@ -39,6 +40,7 @@ module.exports = function (sequelize, DataTypes) {
           isUrl: true,
       }
   },
+
   });
 
   User.prototype.validPassword = function (password) {

@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <form>
                         <div class="form-group">
-                            <label for="item-name">Item Name</label>
+                            <label for="item-name">*Item Name</label>
                             <input type="text" class="form-control" id="item-name">
                         </div>
                         <div class="form-group">
@@ -40,7 +40,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="item-category">Category</label>
+                            <label for="item-category">*Category</label>
                             <select class="form-control" id="item-category">
                                 <option>Antiques</option>
                                 <option>Appliances</option>
@@ -87,16 +87,16 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="item-price">Price ($)</label>
+                            <label for="item-price">*Price ($)</label>
                             <input type="number" class="form-control" id="item-price">
                         </div>
                         <div class="form-group">
-                            <label for="item-location">Location</label>
+                            <label for="item-location">*Location</label>
                             <input type="text" class="form-control" id="item-location">
                         </div>
                         <div class="card text-center">
                             <div class="card-body justify-content-center">
-                                <h5 class="card-title">Upload a Photo of Your Item</h5>
+                                <h5 class="card-title">*Upload a Photo of Your Item</h5>
 
                                 <label class="btn btn-secondary" id="upload-btn" for="fileButton">Upload</label><input
                                     type="file" value="upload" id="fileButton" style="display:none" />
@@ -199,17 +199,52 @@
             };
             console.log(newItem);
 
-            $.ajax("/api/items", {
-                type: "POST",
-                data: newItem
-            }).then(
-                function () {
-                    $("#item-modal").modal();
-                    setTimeout(reload, 1500);
+            //input validation for item name, email, location and image.
+            var errorToss = false;
+            if (!newItem.name || newItem.name === "") {
+                $(".modal-title").text("Error");
+                $(".modal-body").text("Item name is a required field");
+                errorToss = true;
+            }
+            else if (newItem.price < 0) {
+                $(".modal-title").text("Error");
+                $(".modal-body").text("Price must be 0 or greater");
+                errorToss = true;
+            }
+            else if (!newItem.location || newItem.location === "") {
+                $(".modal-title").text("Error");
+                $(".modal-body").text("Location is a required field");
+                errorToss = true;
+            }
+            else if (!newItem.imageUrl) {
+                $(".modal-title").text("Error");
+                $(".modal-body").text("Image is required");
+                errorToss = true;
+            }
 
-                }
-            );
 
+            //checking if there were any validation errors
+            if (errorToss === true) {
+                //if there was, fire modal with error info
+                $("#item-modal").modal();
+            }
+            else {
+                //if no errors, post the item to database
+                $.ajax("/api/items", {
+                    type: "POST",
+                    data: newItem
+                }).then(
+                    function () {
+
+                        //updating modal info to default in case there were errors previously and then fire modal
+                        $(".modal-title").text("Congratulations!");
+                        $(".modal-body").text("Your item has been posted.");
+                        $("#item-modal").modal();
+                        setTimeout(reload, 1500);
+
+                    }
+                );
+            }
 
         });
 
